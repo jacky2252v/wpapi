@@ -5,12 +5,12 @@ function Hero() {
   const [number, setNumber] = useState();
 
   const header = {
-    Headers: {
-      Authorization: `Bearer EAAWG5CZCwRykBOZBinxNQZAvToRxNwdZBXKXudabMMigKsSPXSAd1dcPZAdvpJA10U4iVfnPdChYlEeSZBlRVxfZAYNdyenpbikMv1Q4tYGIXXTMy7b3KDaJwfyOKZALAJX4CTZBBn1M7uLBtGVddDvShvh6O4rb8RWT14TD6QZA2gcC4HKpR12CkzHpN2LIGHznZBnOVZCcNIxF2sE4KikZD`,
-      accept: "application/json",
-    },
+    Authorization: `Bearer EAAWG5CZCwRykBO9AdqOjKXXSSgpr15A9zZCZA8QDkzqHlMNZCou2tbzdZBpsR6p3mnOYZC27ZBZB5sNhOLbtygU5zUqrHnxi8O0t5O9wIDEGulxhz78RNXAC4v332vULoS5oqxUHOIUIHVwZCGFeMheyWxRbq5ysMTSVSSqSO4vOcWqlQIBpvOrzNxYljMTWeKfl6ohcJOAB8UNIZCZCb6w`,
+    "Content-Type": "application/json",
   };
-
+  axios.create({
+    debug: true,
+  });
   const sendMsg = () => {
     console.log("Number is ", number);
 
@@ -18,17 +18,19 @@ function Hero() {
       messaging_product: "whatsapp",
       to: "91" + number,
       type: "template",
-      template: { name: "hello_world", language: { code: "en_US" } },
+      template: { name: "testonly", language: { code: "en" } },
     };
 
     axios
-      .post(
-        "http://graph.facebook.com/v19.0/352144941317379/messages",
+      ?.post(
+        "https://graph.facebook.com/v19.0/352144941317379/messages",
         body,
-        header
+        {
+          headers: header,
+        }
       )
-      .then((res) => console.log("Message send succesfully", res))
-      .catch((err) => console.log("Error while sending", err));
+      ?.then((res) => console.log("Message send succesfully", res))
+      ?.catch((err) => console.log("Error while sending", err));
   };
 
   return (
