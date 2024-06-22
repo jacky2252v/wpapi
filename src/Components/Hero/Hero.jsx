@@ -5,7 +5,7 @@ function Hero() {
   const [number, setNumber] = useState();
 
   const header = {
-    Authorization: `Bearer EAAWG5CZCwRykBO9AdqOjKXXSSgpr15A9zZCZA8QDkzqHlMNZCou2tbzdZBpsR6p3mnOYZC27ZBZB5sNhOLbtygU5zUqrHnxi8O0t5O9wIDEGulxhz78RNXAC4v332vULoS5oqxUHOIUIHVwZCGFeMheyWxRbq5ysMTSVSSqSO4vOcWqlQIBpvOrzNxYljMTWeKfl6ohcJOAB8UNIZCZCb6w`,
+    Authorization: `Bearer EAAMNykEQLmoBOxnzOu19b7byS0sjUz77P4f6cZCJloxKcxtJR4QSxOGttZA21rF3JjDvL4T5eHG7ROx7mAZCX0spukNzv0mxfnu5G7B1MS3ly49GyTA6BhuZC0qKKQlz4DBks79Y1z8mMveB1eVaax2Q5hZBYkDMBnuwh0BiMehwuZBDOkCOZBd26qFtQQe`,
     "Content-Type": "application/json",
   };
   axios.create({
