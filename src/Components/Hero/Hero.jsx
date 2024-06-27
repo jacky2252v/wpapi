@@ -3,9 +3,10 @@ import axios from "axios";
 
 function Hero() {
   const [number, setNumber] = useState();
+  const [token, setToken] = useState();
 
   const header = {
-    Authorization: `Bearer EAAMNykEQLmoBOxnzOu19b7byS0sjUz77P4f6cZCJloxKcxtJR4QSxOGttZA21rF3JjDvL4T5eHG7ROx7mAZCX0spukNzv0mxfnu5G7B1MS3ly49GyTA6BhuZC0qKKQlz4DBks79Y1z8mMveB1eVaax2Q5hZBYkDMBnuwh0BiMehwuZBDOkCOZBd26qFtQQe`,
+    Authorization: `Bearer EAAMNykEQLmoBOZCkSCi1ZCSe2afefDeUiSEWDTZB5s27VPyizn2YVJlNVvrPUZAYy5qZBBSQ7zCzH4KmmBZC7jE1SDWfaPWL7Osfv0ONGZCHp4YZCZAGCkvXVgCnmc9FYYZCCeFQlSyvzoTqWVgHyJZAFNFxUBhAKI3jyZApZAFkDug0ebSBKlgw6PjWZAMwidAGKj`,
     "Content-Type": "application/json",
   };
   axios.create({
@@ -13,12 +14,14 @@ function Hero() {
   });
   const sendMsg = () => {
     console.log("Number is ", number);
+    console.log("Token is ", token);
 
     const body = {
       messaging_product: "whatsapp",
-      to: "91" + number,
+      // to: "91" + number,
+      to: `91${number}`,
       type: "template",
-      template: { name: "testonly", language: { code: "en" } },
+      template: { name: token, language: { code: "en_US" } },
     };
 
     axios
@@ -40,6 +43,19 @@ function Hero() {
         <input
           type="text"
           onChange={(e) => setNumber(e.target.value)}
+          style={{
+            padding: "8px 20px",
+            border: "2px solid ",
+            borderRadius: "2px",
+            background: "transparent",
+            color: "white",
+          }}
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          onChange={(e) => setToken(e.target.value)}
           style={{
             padding: "8px 20px",
             border: "2px solid ",
