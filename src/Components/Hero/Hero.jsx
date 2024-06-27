@@ -21,7 +21,23 @@ function Hero() {
       // to: "91" + number,
       to: `91${number}`,
       type: "template",
-      template: { name: token, language: { code: "en_US" } },
+      template: {
+        name: token,
+        language: { code: "en_US" },
+        components: [
+          {
+            type: "header",
+            parameters: [
+              {
+                type: "image",
+                image: {
+                  link: "https://my.alfred.edu/zoom/_images/foster-lake.jpg",
+                },
+              },
+            ],
+          },
+        ],
+      },
     };
 
     axios
@@ -40,6 +56,7 @@ function Hero() {
     <>
       <h1>Whatsapp API</h1>
       <div className="box">
+        <h3>PhoneNumber</h3>
         <input
           type="text"
           onChange={(e) => setNumber(e.target.value)}
@@ -53,7 +70,7 @@ function Hero() {
         />
         <br />
         <br />
-        <input
+        {/* <input
           type="text"
           onChange={(e) => setToken(e.target.value)}
           style={{
@@ -63,8 +80,39 @@ function Hero() {
             background: "transparent",
             color: "white",
           }}
-        />
+        /> */}
+        <h2>Select Template</h2>
+        <select
+          onChange={(e) => setToken(e.target.value)}
+          name=""
+          id=""
+          style={{
+            padding: "8px 20px",
+            border: "2px solid ",
+            borderRadius: "2px",
+            background: "transparent",
+            color: "white",
+          }}
+        >
+          <option
+            value="hello_world"
+            style={{
+              color: "black",
+            }}
+          >
+            hello_world
+          </option>
+          <option
+            value="whap_test"
+            style={{
+              color: "black",
+            }}
+          >
+            whap_test
+          </option>
+        </select>
       </div>
+      <br />
       <div className="btn">
         <button
           onClick={sendMsg}
