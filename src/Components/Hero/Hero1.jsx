@@ -3,7 +3,7 @@ import axios from "axios";
 
 function Hero() {
   const [number, setNumber] = useState();
-  // const [token, setToken] = useState();
+  const [token, setToken] = useState();
 
   const header = {
     Authorization: `Bearer EAAMNykEQLmoBOZCkSCi1ZCSe2afefDeUiSEWDTZB5s27VPyizn2YVJlNVvrPUZAYy5qZBBSQ7zCzH4KmmBZC7jE1SDWfaPWL7Osfv0ONGZCHp4YZCZAGCkvXVgCnmc9FYYZCCeFQlSyvzoTqWVgHyJZAFNFxUBhAKI3jyZApZAFkDug0ebSBKlgw6PjWZAMwidAGKj`,
@@ -14,29 +14,29 @@ function Hero() {
   });
   const sendMsg = () => {
     console.log("Number is ", number);
-    // console.log("Token is ", token);
+    console.log("Token is ", token);
 
     const body = {
       messaging_product: "whatsapp",
       // to: "91" + number,
       to: `91${number}`,
-      type: "template",
+      type: "whap_test",
       template: {
-        name: "hello_world",
+        name: token,
         language: { code: "en_US" },
-        // components: [
-        //   {
-        //     type: "header",
-        //     parameters: [
-        //       {
-        //         type: "image",
-        //         image: {
-        //           link: "https://my.alfred.edu/zoom/_images/foster-lake.jpg",
-        //         },
-        //       },
-        //     ],
-        //   },
-        // ],
+        components: [
+          {
+            type: "header",
+            parameters: [
+              {
+                type: "image",
+                image: {
+                  link: token,
+                },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -70,49 +70,19 @@ function Hero() {
         />
         <br />
         <br />
-        {/* <input
-          type="text"
-          onChange={(e) => setToken(e.target.value)}
-          style={{
-            padding: "8px 20px",
-            border: "2px solid ",
-            borderRadius: "2px",
-            background: "transparent",
-            color: "white",
-          }}
-        /> */}
-        {/* <h2>Select Template</h2>
-        <select
-          onChange={(e) => setToken(e.target.value)}
-          name=""
-          id=""
-          style={{
-            padding: "8px 20px",
-            border: "2px solid ",
-            borderRadius: "2px",
-            background: "transparent",
-            color: "white",
-          }}
-        >
-          <option
-            value="hello_world"
-            style={{
-              color: "black",
-            }}
-          >
-            hello_world
-          </option>
-          <option
-            value="whap_test"
-            style={{
-              color: "black",
-            }}
-          >
-            whap_test
-          </option>
-        </select> */}
-
-        <h3>Template Name: hello_world</h3>
+        <h3>PhoneNumber</h3>
+        <div className="mb-1">
+          Image <span className="font-css top">*</span>
+          <div className="">
+            <input
+              type="text"
+              id="file-input"
+              name="ImageStyle"
+              onChange={(e) => setToken(e.target.value)}
+            />
+          </div>
+        </div>
+        <h2>Template Name: whap_test</h2>
       </div>
       <br />
       <div className="btn">
