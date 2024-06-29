@@ -1,7 +1,7 @@
 export default function handler(req, res) {
     const VERIFY_TOKEN = 'my_verify_token';
 
-    if (req.method === 'GET') {
+    if (req.method === 'POST') {
         const mode = req.query['hub.mode'];
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
@@ -11,7 +11,7 @@ export default function handler(req, res) {
         } else {
             res.status(403).send('Forbidden');
         }
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'GET') {
         // Handle the incoming webhook request
         const body = req.body;
 
