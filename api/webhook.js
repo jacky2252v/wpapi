@@ -25,80 +25,67 @@
 //     }
 // }
 
-import express from "express";
 import axios from "axios";
-import serverless from "serverless-http";
 
-const app = express();
-app.use(express.json());
+export default async function handler(req, res) {
+    const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
 
-const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
+    if (req.method === 'GET') {
+        const mode = req.query["hub.mode"];
+        const token = req.query["hub.verify_token"];
+        const challenge = req.query["hub.challenge"];
 
-app.post("/api/webhook", async (req, res) => {
-    try {
-        console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
-        const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
-
-        if (message?.type === "text") {
-            const business_phone_number_id =
-                req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-
-            await axios({
-                method: "POST",
-                url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-                headers: {
-                    Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-                },
-                data: {
-                    messaging_product: "whatsapp",
-                    to: message.from,
-                    text: { body: "Hello, Welcome to our portal" },
-                    context: {
-                        message_id: message.id, // shows the message as a reply to the original user message
-                    },
-                },
-            });
-
-            // mark incoming message as read
-            await axios({
-                method: "POST",
-                url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-                headers: {
-                    Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-                },
-                data: {
-                    messaging_product: "whatsapp",
-                    status: "read",
-                    message_id: message.id,
-                },
-            });
+        if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
+            res.status(200).send(challenge);
+            console.log("Webhook verified successfully!");
+        } else {
+            res.status(403).send("Forbidden");
         }
-    } catch (error) {
-        console.error("Error handling webhook request:", error);
-        res.status(500).send("Error handling webhook request");
-    } finally {
-        res.sendStatus(200);
-    }
-});
+    } else if (req.method === 'POST') {
+        try {
+            console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+            const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
 
-app.get("/api/webhook", (req, res) => {
-    const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
+            if (message?.type === "text") {
+                const business_phone_number_id =
+                    req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
-    // check the mode and token sent are correct
-    if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
-        // respond with 200 OK and challenge token from the request
-        res.status(200).send(challenge);
-        console.log("Webhook verified successfully!");
+                await axios({
+                    method: "POST",
+                    url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+                    headers: {
+                        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+                    },
+                    data: {
+                        messaging_product: "whatsapp",
+                        to: message.from,
+                        text: { body: "Hello, Welcome to our portal" },
+                        context: {
+                            message_id: message.id,
+                        },
+                    },
+                });
+
+                await axios({
+                    method: "POST",
+                    url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+                    headers: {
+                        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+                    },
+                    data: {
+                        messaging_product: "whatsapp",
+                        status: "read",
+                        message_id: message.id,
+                    },
+                });
+            }
+            res.sendStatus(200);
+        } catch (error) {
+            console.error("Error handling webhook request:", error);
+            res.status(500).send("Error handling webhook request");
+        }
     } else {
-        // respond with '403 Forbidden' if verify tokens do not match
-        res.sendStatus(403);
+        res.setHeader('Allow', ['GET', 'POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-});
-
-app.get("/", (req, res) => {
-    res.send(`<pre>Nothing to see here. Checkout README.md to start.</pre>`);
-});
-
-export default serverless(app);
+}
