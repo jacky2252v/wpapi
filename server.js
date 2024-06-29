@@ -6,7 +6,7 @@ app.use(express.json());
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
-app.post("https://wpapi-one.vercel.app/webhook", async (req, res) => {
+app.post("/webhook", async (req, res) => {
     try {
         console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
         const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
