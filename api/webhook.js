@@ -30,7 +30,7 @@ import axios from "axios";
 export default async function handler(req, res) {
     const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
 
-    if (req.method === 'GET') {
+    if (req.method === 'POST') {
         const mode = req.query["hub.mode"];
         const token = req.query["hub.verify_token"];
         const challenge = req.query["hub.challenge"];
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         } else {
             res.status(403).send("Forbidden");
         }
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'GET') {
         try {
             console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
             const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
