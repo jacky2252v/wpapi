@@ -180,7 +180,8 @@ const app = express();
 app.use(express.json());
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
-if (!process.env.WEBHOOK_VERIFY_TOKEN || !process.env.GRAPH_API_TOKEN) {
+
+if (!WEBHOOK_VERIFY_TOKEN || !GRAPH_API_TOKEN) {
     console.error("Missing environment variables: WEBHOOK_VERIFY_TOKEN and GRAPH_API_TOKEN");
     process.exit(1);
 }
@@ -193,6 +194,7 @@ app.post("/webhook", async (req, res) => {
 
         if (message?.type === "text") {
             const businessPhoneNumberId = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+
             if (!businessPhoneNumberId) {
                 console.error("Missing business phone number ID in webhook request");
                 res.status(400).send("Invalid request");
@@ -201,7 +203,7 @@ app.post("/webhook", async (req, res) => {
 
             await axios({
                 method: "POST",
-                url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+                url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
                 headers: {
                     Authorization: `Bearer ${GRAPH_API_TOKEN}`,
                 },
@@ -215,10 +217,9 @@ app.post("/webhook", async (req, res) => {
                 },
             });
 
-            // mark incoming message as read
             await axios({
                 method: "POST",
-                url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+                url: `https://graph.facebook.com/v18.0/${businessPhoneNumberId}/messages`,
                 headers: {
                     Authorization: `Bearer ${GRAPH_API_TOKEN}`,
                 },
@@ -231,27 +232,21 @@ app.post("/webhook", async (req, res) => {
         }
 
         res.sendStatus(200);
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error handling webhook request:", error);
         res.status(500).send("Error processing request");
     }
 });
 
-// accepts GET requests at the /webhook endpoint. You need this URL to setup webhook initially.
-// info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests
 app.get("/webhook", (req, res) => {
     const mode = req.query["hub.mode"];
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
 
-    // check the mode and token sent are correct
     if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
-        // respond with 200 OK and challenge token from the request
         res.status(200).send(challenge);
         console.log("Webhook verified successfully!");
     } else {
-        // respond with '403 Forbidden' if verify tokens do not match
         res.sendStatus(403);
     }
 });
