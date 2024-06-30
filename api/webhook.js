@@ -153,9 +153,11 @@ export default async function handler(req, res) {
             }
 
             res.status(200).send('Webhook received');
+            return;
         } catch (error) {
-            console.error('Error handling webhook request:', error);
-            res.status(500).send('Error handling webhook request');
+            console.error('Error handling webhook request:', error.message);
+            res.status(500).send('Error handling webhook request: ' + error.message);
+            return;
         }
     } else {
         res.setHeader('Allow', ['GET', 'POST']);
