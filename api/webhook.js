@@ -186,7 +186,7 @@ if (!WEBHOOK_VERIFY_TOKEN || !GRAPH_API_TOKEN) {
     process.exit(1);
 }
 
-app.post("/webhook", async (req, res) => {
+app.post("/api/webhook", async (req, res) => {
     try {
         console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
@@ -238,7 +238,7 @@ app.post("/webhook", async (req, res) => {
     }
 });
 
-app.get("/webhook", (req, res) => {
+app.get("/api/webhook", (req, res) => {
     const mode = req.query["hub.mode"];
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
