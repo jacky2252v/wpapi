@@ -3,11 +3,26 @@ import axios from "axios";
 
 function Home() {
   const [number, setNumber] = useState("");
-  const [template, setTemplate] = useState("hello_world");
+  const [sheader, setSheader] = useState("");
+  const [sbody, setSbody] = useState("");
+  const [template, setTemplate] = useState("");
   const [templates, setTemplates] = useState([
-    { name: "hello_world", language: "en_US" },
-    { name: "test2", language: "en_US" },
-    // { name: "custom_template", language: "fr_FR" },
+    { id: 1, name: "hello_world", language: "en_US" },
+    {
+      id: 2,
+      name: "test2",
+      language: "en_US",
+      components: [
+        {
+          type: "header",
+          parameters: [{ type: "text", text: "" }],
+        },
+        {
+          type: "body",
+          parameters: [{ type: "text", text: "" }],
+        },
+      ],
+    },
   ]);
 
   const header = {
@@ -20,6 +35,11 @@ function Home() {
       alert("Please enter a phone number");
       return;
     }
+    const templateComponents = templates.find(
+      (t) => t.name === template
+    ).components;
+    templateComponents[0].parameters[0].text = sheader;
+    templateComponents[1].parameters[0].text = sbody;
 
     const body = {
       messaging_product: "whatsapp",
@@ -28,16 +48,7 @@ function Home() {
       template: {
         name: template,
         language: { code: templates.find((t) => t.name === template).language },
-        components: [
-          {
-            type: "header",
-            parameters: [{ type: "text", text: "Vivek" }],
-          },
-          {
-            type: "body",
-            parameters: [{ type: "text", text: "Vivek" }],
-          },
-        ],
+        components: templateComponents,
       },
     };
 
@@ -74,7 +85,6 @@ function Home() {
         />
         <br />
         <br />
-
         <h3>Template:</h3>
         <select value={template} onChange={(e) => setTemplate(e.target.value)}>
           {templates.map((template) => (
@@ -84,6 +94,38 @@ function Home() {
           ))}
         </select>
       </div>
+      <br />
+      {template === "test2" && (
+        <div>
+          <h3>Header Value:</h3>
+          <input
+            type="text"
+            value={sheader}
+            onChange={(e) => setSheader(e.target.value)}
+            style={{
+              padding: "8px 20px",
+              border: "2px solid ",
+              borderRadius: "2px",
+              background: "transparent",
+              color: "white",
+            }}
+          />
+          <br />
+          <h3>Body Value:</h3>
+          <input
+            type="text"
+            value={sbody}
+            onChange={(e) => setSbody(e.target.value)}
+            style={{
+              padding: "8px 20px",
+              border: "2px solid ",
+              borderRadius: "2px",
+              background: "transparent",
+              color: "white",
+            }}
+          />
+        </div>
+      )}
       <br />
       <div className="btn">
         <button
