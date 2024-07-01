@@ -6,8 +6,8 @@ function Home() {
   const [template, setTemplate] = useState("hello_world");
   const [templates, setTemplates] = useState([
     { name: "hello_world", language: "en_US" },
-    { name: "goodbye_world", language: "es_ES" },
-    { name: "custom_template", language: "fr_FR" },
+    { name: "test2", language: "en_US" },
+    // { name: "custom_template", language: "fr_FR" },
   ]);
 
   const header = {
@@ -23,7 +23,7 @@ function Home() {
 
     const body = {
       messaging_product: "whatsapp",
-      to: `+91${number}`, // Use a more robust phone number formatting
+      to: `+91${number}`,
       type: "template",
       template: {
         name: template,
@@ -35,7 +35,10 @@ function Home() {
       .post("https://graph.facebook.com/v19.0/352144941317379/messages", body, {
         headers: header,
       })
-      .then((res) => console.log("Message sent successfully", res))
+      .then((res) => {
+        console.log("Message sent successfully", res);
+        alert("Message sent successfully!");
+      })
       .catch((err) => {
         console.error("Error while sending", err);
         alert("Error sending message. Please try again.");
