@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 function Home() {
-  const [number, setNumber] = useState(""); // Initialize with an empty string
+  const [number, setNumber] = useState("");
   const [template, setTemplate] = useState("hello_world");
   const [templates, setTemplates] = useState([
     { name: "hello_world", language: "en_US" },
@@ -11,7 +11,7 @@ function Home() {
   ]);
 
   const header = {
-    Authorization: `Bearer EAAMNykEQLmoBOZCkSCi1ZCSe2afefDeUiSEWDTZB5s27VPyizn2YVJlNVvrPUZAYy5qZBBSQ7zCzH4KmmBZC7jE1SDWfaPWL7Osfv0ONGZCHp4YZCZAGCkvXVgCnmc9FYYZCCeFQlSyvzoTqWVgHyJZAFNFxUBhAKI3jyZApZAFkDug0ebSBKlgw6PjWZAMwidAGKj`, // Replace with a secure way to store API tokens
+    Authorization: `Bearer EAAMNykEQLmoBOZCkSCi1ZCSe2afefDeUiSEWDTZB5s27VPyizn2YVJlNVvrPUZAYy5qZBBSQ7zCzH4KmmBZC7jE1SDWfaPWL7Osfv0ONGZCHp4YZCZAGCkvXVgCnmc9FYYZCCeFQlSyvzoTqWVgHyJZAFNFxUBhAKI3jyZApZAFkDug0ebSBKlgw6PjWZAMwidAGKj`,
     "Content-Type": "application/json",
   };
 
@@ -28,6 +28,16 @@ function Home() {
       template: {
         name: template,
         language: { code: templates.find((t) => t.name === template).language },
+        components: [
+          {
+            type: "header",
+            parameters: [{ type: "text", text: "Vivek" }],
+          },
+          {
+            type: "body",
+            parameters: [{ type: "text", text: "Vivek" }],
+          },
+        ],
       },
     };
 
