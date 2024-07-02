@@ -5,7 +5,7 @@ function Home() {
   const [number, setNumber] = useState("");
   const [sheader, setSheader] = useState("");
   const [sbody, setSbody] = useState("");
-  const [template, setTemplate] = useState("");
+  const [template, setTemplate] = useState("selectTemplate");
   const [templates, setTemplates] = useState([
     { id: 1, name: "hello_world", language: "en_US" },
     {
