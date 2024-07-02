@@ -23,6 +23,17 @@ function Home() {
         },
       ],
     },
+    {
+      id: 3,
+      name: "whatsapp_text",
+      language: "en_US",
+      components: [
+        {
+          type: "header",
+          parameters: [{ type: "text", text: "" }],
+        },
+      ],
+    },
   ]);
 
   const header = {
@@ -46,7 +57,12 @@ function Home() {
       templateComponents.length > 0 &&
       templateComponents[0].parameters.length > 0
     ) {
-      templateComponents[0].parameters[0].text = sheader;
+      const firstComponent = templateComponents[0].parameters[0];
+      if (firstComponent.type === "text") {
+        firstComponent.text = sheader;
+      } else if (firstComponent.type === "image") {
+        firstComponent.image[0].link = sheader;
+      }
     }
     if (
       templateComponents.length > 1 &&
@@ -130,6 +146,40 @@ function Home() {
             type="text"
             value={sbody}
             onChange={(e) => setSbody(e.target.value)}
+            style={{
+              padding: "8px 20px",
+              border: "2px solid ",
+              borderRadius: "2px",
+              background: "transparent",
+              color: "white",
+            }}
+          />
+        </div>
+      )}
+      {template === "whatsapp_text" && (
+        <div>
+          <h3>Header Value:</h3>
+          <input
+            type="text"
+            value={sheader}
+            onChange={(e) => setSheader(e.target.value)}
+            style={{
+              padding: "8px 20px",
+              border: "2px solid ",
+              borderRadius: "2px",
+              background: "transparent",
+              color: "white",
+            }}
+          />
+        </div>
+      )}
+      {template === "whap_test" && (
+        <div>
+          <h3>Header Image URL:</h3>
+          <input
+            type="text"
+            value={sheader}
+            onChange={(e) => setSheader(e.target.value)}
             style={{
               padding: "8px 20px",
               border: "2px solid ",
