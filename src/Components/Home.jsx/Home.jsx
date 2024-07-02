@@ -5,12 +5,11 @@ function Home() {
   const [number, setNumber] = useState("");
   const [sheader, setSheader] = useState("");
   const [sbody, setSbody] = useState("");
-  const [template, setTemplate] = useState("selectTemplate");
+  const [template, setTemplate] = useState("hello_world");
   const [templates, setTemplates] = useState([
-    { id: 1, name: "selectTemplate", language: "en_US" },
-    { id: 2, name: "hello_world", language: "en_US" },
+    { id: 1, name: "hello_world", language: "en_US" },
     {
-      id: 3,
+      id: 2,
       name: "test2",
       language: "en_US",
       components: [
