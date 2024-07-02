@@ -24,7 +24,7 @@ app.post("/api/webhook", async (req, res) => {
             data: {
                 messaging_product: "whatsapp",
                 to: message.from,
-                text: { body: "Hello! '/n' How can i help you?" },
+                text: { body: "Hello! How can i help you?" },
                 context: {
                     message_id: message.id,
                 },
