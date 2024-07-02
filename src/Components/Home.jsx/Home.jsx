@@ -34,6 +34,7 @@ function Home() {
         },
       ],
     },
+    { id: 4, name: "mytemplate", language: "en_US" },
   ]);
 
   const header = {
