@@ -35,11 +35,25 @@ function Home() {
       alert("Please enter a phone number");
       return;
     }
-    const templateComponents = templates.find(
-      (t) => t.name === template
-    ).components;
-    templateComponents[0].parameters[0].text = sheader;
-    templateComponents[1].parameters[0].text = sbody;
+    const selectedTemplate = templates.find((t) => t.name === template);
+    if (!selectedTemplate) {
+      alert("Please select a valid template");
+      return;
+    }
+    const templateComponents = selectedTemplate.components || [];
+
+    if (
+      templateComponents.length > 0 &&
+      templateComponents[0].parameters.length > 0
+    ) {
+      templateComponents[0].parameters[0].text = sheader;
+    }
+    if (
+      templateComponents.length > 1 &&
+      templateComponents[1].parameters.length > 0
+    ) {
+      templateComponents[1].parameters[0].text = sbody;
+    }
 
     const body = {
       messaging_product: "whatsapp",
@@ -47,7 +61,7 @@ function Home() {
       type: "template",
       template: {
         name: template,
-        language: { code: templates.find((t) => t.name === template).language },
+        language: { code: selectedTemplate.language },
         components: templateComponents,
       },
     };
